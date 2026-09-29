@@ -10,17 +10,17 @@
 
 | Mục | Nội dung |
 |-----|----------|
-| Họ và tên | (điền họ tên) |
-| Mã học viên | (điền mã học viên) |
-| Repo | (điền link repo K4-L3B-DAY12-HoVaTen-MSSV-CloudServicesAndDeployment) |
+| Họ và tên | Dao Minh Hieu |
+| Mã học viên | 2A202602561 |
+| Repo | https://github.com/hieujinx/K4-L3B-DAY12-DaoMinhHieu-2A202602561-CloudServicesAndDeployment |
 
 ## Service
 
 | Mục | Nội dung |
 |-----|----------|
-| Public URL | https://TODO-thay-bang-url-that.up.railway.app |
-| Platform | Railway / Render / Cloud Run — (điền platform bạn dùng) |
-| Ngày deploy | (điền ngày) |
+| Public URL | https://day12-agent-xvc3.onrender.com |
+| Platform | Render |
+| Ngày deploy | 2026-09-29 |
 
 ## Biến Môi Trường Đã Set Trên Cloud
 
@@ -30,7 +30,7 @@ Ghi tên biến và **nguồn giá trị**, không ghi giá trị:
 |------|--------|---------|
 | `PORT` | ✅ | platform tự gán |
 | `AGENT_API_KEY` | ✅ | đặt trong dashboard, không nằm trong repo |
-| `REDIS_URL` | ✅ | (điền: Redis add-on của platform / Upstash / ...) |
+| `REDIS_URL` | ✅ | Render Key Value service `day12-redis` |
 | `RATE_LIMIT_PER_MINUTE` | ✅ | 10 |
 | `MONTHLY_BUDGET_USD` | ✅ | 10.0 |
 | `LOG_LEVEL` | ✅ | INFO |
@@ -70,10 +70,24 @@ done; echo
 
 ## Kết Quả Chạy Thật
 
-Dán output của các lệnh trên vào đây:
+Kết quả kiểm tra thực tế ngày 2026-09-29:
 
 ```
-(điền output)
+GET /health
+HTTP 200
+{"status":"ok","service":"day12-agent","version":"1.0.0"}
+
+GET /ready
+HTTP 200
+{"status":"ready","redis":true}
+
+POST /ask không có API key
+HTTP 401
+{"detail":"invalid or missing API key"}
+
+POST /ask với API key hợp lệ và X-User-Id: cp5-test
+HTTP 200
+answer được trả về thành công
 ```
 
 ## Ảnh Chụp Màn Hình
@@ -85,17 +99,8 @@ Dán output của các lệnh trên vào đây:
 
 ---
 
-## Nếu Dùng Phương Án Dự Phòng
+## Trạng Thái Deploy
 
-Không đăng ký được tài khoản cloud? Vẫn nộp được bài, nhưng CP5 tối đa 60% điểm:
-
-1. Đặt `LOCAL_FALLBACK=true` trong `.env`
-2. Chạy `docker compose up -d` rồi kiểm tra `docker compose ps`
-3. Chụp màn hình vào `screenshots/`
-4. Chạy `pytest tests/test_cp5.py -v` — bộ test sẽ tự chuyển sang kiểm tra
-   `http://localhost:8000`
-5. Ghi rõ lý do không deploy được vào phần dưới đây:
-
-```
-(điền lý do nếu dùng phương án dự phòng, ngược lại xóa mục này)
-```
+Cloud deployment đã hoàn tất trên Render. Service web `day12-agent` ở trạng
+thái Deployed và Redis `day12-redis` ở trạng thái Available. Không sử dụng
+`LOCAL_FALLBACK`.
